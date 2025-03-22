@@ -18,7 +18,7 @@ import base64
 import platform
 from hashlib import sha1, pbkdf2_hmac
 
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 
 from pypykatz import logger
 from pypykatz.dpapi.structures.masterkeyfile import MasterKeyFile
