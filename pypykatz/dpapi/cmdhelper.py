@@ -318,6 +318,8 @@ class DPAPICMDHelper:
 			def read_file_or_hex(x):
 				data = None
 				try:
+					if '../' in x or '..\\' in x:
+						raise Exception('Invalid file path')
 					with open(x, 'rb') as f:
 						data=f.read()
 				except:
@@ -355,6 +357,8 @@ class DPAPICMDHelper:
 				return
 
 			if args.outfile is not None:
+				if '../' in args.outfile or '..\\' in args.outfile:
+					raise Exception('Invalid file path')
 				with open(args.outfile, 'w') as f:
 					for cred in creds:
 						f.write(cred.to_text() + '\r\n')

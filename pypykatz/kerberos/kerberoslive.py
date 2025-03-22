@@ -365,6 +365,8 @@ async def live_roast(outfile = None):
 		
 		if outfile is not None:
 			filename = outfile+ 'spnroast_%s_%s.txt' % (logon['domain'], datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%S"))
+			if '../' in filename or '..\\' in filename:
+				raise Exception('Invalid file path')
 			with open(filename, 'w', newline = '') as f:
 				for thash in results:
 					spn_cnt += 1

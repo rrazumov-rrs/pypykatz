@@ -265,6 +265,8 @@ class KerberosCMDHelper:
 							name = hex(int(luid)) + '_' + '@'.join([name, pt['tickets'][0]['realm']])
 						except:
 							name = hex(int(luid)) + '_' + os.urandom(4).hex()
+						if '../' in args.outdir or '..\\' in args.outdir:
+							raise Exception('Invalid file path')
 						with open(os.path.join(args.outdir, 'ticket_%s.kirbi' % name), 'wb') as f:
 							f.write(ticket['Ticket'])
 
@@ -340,6 +342,8 @@ class KerberosCMDHelper:
 				return
 			
 			if args.out_file is not None:
+				if '../' in args.out_file or '..\\' in args.out_file:
+					raise Exception('Invalid file path')
 				with open(args.out_file, 'wb') as f:
 					f.write(kirbi.dump())
 			else:

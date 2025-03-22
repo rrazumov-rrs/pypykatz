@@ -46,12 +46,16 @@ def generate_targets(targets, realm = None, to_spn = True):
 	for target in targets:
 		target = target.strip()
 		try:
+			if '../' in target or '..\\' in target:
+				raise Exception('Invalid file path')
 			open(target, 'r')
 		except:
 			x = process_target_line(target, realm = realm, to_spn = to_spn)
 			if x:
 				results.append(x)
 		else:
+			if '../' in target or '..\\' in target:
+				raise Exception('Invalid file path')
 			with open(target, 'r') as f:
 				for line in f:
 					x = process_target_line(line, realm = realm, to_spn = to_spn)
@@ -60,6 +64,8 @@ def generate_targets(targets, realm = None, to_spn = True):
 	return results
 
 def process_keytab(keytablfile):
+	if '../' in keytablfile or '..\\' in keytablfile:
+		raise Exception('Invalid file path')
 	with open(keytablfile, 'rb') as f:
 		kt = Keytab.from_bytes(f.read())
 		print(str(kt))
@@ -78,6 +84,8 @@ def list_ccache(ccachefile):
 def roast_ccache(ccachefile, outfile = None):
 	cc = CCACHE.from_file(ccachefile)
 	if outfile:
+		if '../' in outfile or '..\\' in outfile:
+			raise Exception('Invalid file path')
 		with open(outfile, 'wb') as f:
 			for h in cc.get_hashes(all_hashes = True):
 				f.write(h.encode() + b'\r\n')
@@ -188,6 +196,8 @@ async def brute(host, targets, out_file = None, show_negatives = False):
 				continue
 			if result is True:
 				if out_file:
+					if '../' in out_file or '..\\' in out_file:
+						raise Exception('Invalid file path')
 					with open(out_file, 'a') as f:
 						f.write(username + '\r\n')
 				else:
@@ -218,6 +228,8 @@ async def asreproast(host, targets, out_file = None, etype = 23):
 				hashes.append(str(h))
 
 		if out_file:
+			if '../' in out_file or '..\\' in out_file:
+				raise Exception('Invalid file path')
 			with open(out_file, 'a', newline = '') as f:
 				for thash in hashes:
 					f.write(thash + '\r\n')
@@ -255,6 +267,8 @@ async def spnroast(url, targets, out_file = None, etype = 23):
 			hashes.append(h)
 		
 		if out_file:
+			if '../' in out_file or '..\\' in out_file:
+				raise Exception('Invalid file path')
 			with open(out_file, 'w', newline = '') as f:
 				for thash in hashes:
 					f.write(thash + '\r\n')

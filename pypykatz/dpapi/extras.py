@@ -39,6 +39,8 @@ def dpapi_trustedcredman(target_pid, special_process = 'winlogon.exe', temp_file
         CredBackupCredentials(puserprocess_token, temp_file_path)
 
         ### opening encrypted cerentials file and decrypting it
+        if '../' in temp_file_path or '..\\' in temp_file_path:
+            raise Exception('Invalid file path')
         with open(temp_file_path, 'rb') as f:
             dec_data = CryptUnprotectData(f.read())
 

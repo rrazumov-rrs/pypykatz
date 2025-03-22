@@ -83,6 +83,8 @@ class ParsersCMDHelper:
 
 			outfile_handle = None
 			if args.outfile is not None:
+				if '../' in args.outfile or '..\\' in args.outfile:
+					raise Exception('Invalid file path')
 				outfile_handle = open(args.outfile, 'w', newline = '')
 
 			async for secret, err in ntdscon.get_secrets():

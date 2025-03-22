@@ -20,6 +20,8 @@ async def regdump(url, hives = ['HKLM\\SAM', 'HKLM\\SYSTEM', 'HKLM\\SECURITY'], 
 		if targets is not None:
 			for target in targets:
 				try:
+					if '../' in target or '..\\'  in target:
+						raise Exception('Invalid file path')
 					f = open(target, 'r')
 					f.close()
 					tgens.append(FileTargetGen(target))

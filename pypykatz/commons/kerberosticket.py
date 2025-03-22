@@ -214,6 +214,8 @@ class KerberosTicket:
 		
 	def to_kirbi(self, dir):
 		for filename in self.kirbi_data:
+			if '../' in dir or '..\\' in dir or '../' in filename or '..\\' in filename:
+				raise Exception('Invalid file path')
 			with open(os.path.join(dir, filename), 'wb') as f:
 				f.write(self.kirbi_data[filename].dump())
 	

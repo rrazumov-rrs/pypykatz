@@ -478,6 +478,8 @@ class SMBCMDHelper:
 					if '../' in args.outfile or '..\' in args.outfile:
 						raise Exception('Invalid file path')
 					outfile = open(args.outfile+'_dcsync.txt', 'w', newline = '')
+						raise Exception('Invalid file path')
+					outfile = open(args.outfile+'_dcsync.txt', 'w', newline = '')
 
 				async for secret in dcsync(args.url):
 					if args.outfile is not None:
@@ -493,7 +495,9 @@ class SMBCMDHelper:
 		
 		elif args.smb_module == 'dcsync':
 			from pypykatz.smb.dcsync import dcsync
-			
+				if '../' in args.outfile or '..\' in args.outfile:
+					raise Exception('Invalid file path')
+				outfile = open(args.outfile, 'w', newline = '')
 			if args.outfile is not None:
 				if '../' in args.outfile or '..\' in args.outfile:
 					raise Exception('Invalid file path') 
@@ -509,6 +513,8 @@ class SMBCMDHelper:
 				outfile.close()
 		
 		elif args.smb_module == 'regdump':
+			if '../' in args.outfile or '..\' in args.outfile:
+				raise Exception('Invalid file path')
 			from pypykatz.smb.regutils import regdump
 			async for tid, po, err in regdump(args.url, targets=args.target, worker_cnt = args.worker_count):
 				if err is not None:
@@ -625,6 +631,8 @@ class SMBCMDHelper:
 			print('Parprintnightmare OK!')
 
 	def process_results(self, results, files_with_error, args, file_prefix = ''):
+		if args.outfile and ('../' in args.outfile or '..\' in args.outfile):
+			raise Exception('Invalid file path')
 		if args.outfile and args.json:
 			with open(args.outfile+file_prefix, 'a') as f:
 				json.dump(results, f, cls = UniversalEncoder, indent=4, sort_keys=True)

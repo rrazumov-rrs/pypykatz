@@ -34,6 +34,8 @@ class DebugFile:
 class ADebugFile:
 	def __init__(self, filename):
 		self.filename = filename
+		if '../' in self.filename or '..\\' in self.filename:
+			raise Exception('Invalid file path')
 		self.fh = open(self.filename, 'rb')
 
 		self.reads = []
