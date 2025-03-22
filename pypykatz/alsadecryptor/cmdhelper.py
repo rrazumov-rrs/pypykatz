@@ -52,6 +52,8 @@ class LSACMDHelper:
 				json.dump(results, f, cls = UniversalEncoder, indent=4, sort_keys=True)
 
 		elif args.outfile and args.grep:
+			if '../' in args.outfile or '..\\' in args.outfile:
+				raise Exception('Invalid file path')
 			with open(args.outfile, 'w', newline = '') as f:
 				f.write(':'.join(LogonSession.grep_header) + '\r\n')
 				for result in results:
@@ -60,6 +62,8 @@ class LSACMDHelper:
 							f.write(':'.join(row) + '\r\n')
 		
 		elif args.outfile:
+			if '../' in args.outfile or '..\\' in args.outfile:
+				raise Exception('Invalid file path')
 			with open(args.outfile, 'w') as f:
 				for result in results:
 					f.write('FILE: ======== %s =======\n' % result)

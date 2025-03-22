@@ -61,6 +61,8 @@ class OffineRegistry:
 		if '../' in file_path or '..\\' in file_path:
 			raise Exception('Invalid file path')
 		with open(file_path, 'a', newline = '') as f:
+			raise Exception('Invalid file path')
+		with open(file_path, 'a', newline = '') as f:
 			if json_format == False:
 				f.write(str(self))
 			else:
@@ -143,7 +145,7 @@ class OffineRegistry:
 				
 		else:
 			logger.warning('SAM hive path not supplied! Parsing SAM will not work')
-			
+
 		if security_path:
 			try:
 				if notfile == True:

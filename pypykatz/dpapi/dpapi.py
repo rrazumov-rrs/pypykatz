@@ -18,7 +18,7 @@ import base64
 import platform
 from hashlib import sha1, pbkdf2_hmac
 
-import defusedxml.ElementTree as ET
+import xml.etree.ElementTree as ET
 
 from pypykatz import logger
 from pypykatz.dpapi.structures.masterkeyfile import MasterKeyFile
@@ -120,6 +120,8 @@ class DPAPI:
 
 	def load_prekeys(self, filename):
 		try:
+			if '../' in filename or '..\\' in filename:
+				raise Exception('Invalid file path')
 			open(filename, 'r')
 		except Exception as e:
 			key = bytes.fromhex(filename)
@@ -138,11 +140,15 @@ class DPAPI:
 			for x in self.backupkeys:
 				print('[GUID] %s [BACKUPKEY] %s' % (x, self.backupkeys[x].hex()))
 		else:
+			if '../' in filename or '..\\' in filename:
+				raise Exception('Invalid file path')
 			with open(filename, 'w', newline = '') as f:
 				t = { 'masterkeys' : self.masterkeys, 'backupkeys': self.backupkeys}
 				f.write(json.dumps(t, cls = UniversalEncoder, indent=4, sort_keys=True))
 
 	def load_masterkeys(self, filename):
+		if '../' in filename or '..\\' in filename:
+			raise Exception('Invalid file path')
 		with open(filename, 'r') as f:
 			data = json.loads(f.read())
 		
@@ -349,6 +355,8 @@ class DPAPI:
 		"""
 		Decrypting the masterkeyfile using the domain backup key in .pvk format
 		"""
+		if '../' in mkffile or '..\\' in mkffile:
+			raise Exception('Invalid file path')
 		with open(mkffile, 'rb') as fp:
 			data = fp.read()
 		mkf = MasterKeyFile.from_bytes(data)
@@ -550,6 +558,8 @@ class DPAPI:
 		keys: Optional.
 		returns: touple of bytes, describing two keys
 		"""
+		if '../' in file_path or '..\\' in file_path:
+			raise Exception('Invalid file path')
 		with open(file_path, 'rb') as f:
 			return self.decrypt_vpol_bytes(f.read())
 
@@ -560,6 +570,8 @@ class DPAPI:
 		return self.decrypt_securestring_bytes(bytes.fromhex(hex_str))
 	
 	def decrypt_securestring_file(self, file_path):
+		if '../' in file_path or '..\\' in file_path:
+			raise Exception('Invalid file path')
 		with open(file_path, 'r') as f:
 			data = f.read()
 		return self.decrypt_securestring_hex(data)
@@ -713,6 +725,8 @@ class DPAPI:
 
 		for username in dbpaths:
 			if 'localstate' in dbpaths[username]:
+				if '../' in dbpaths[username]['localstate'] or '..\\' in dbpaths[username]['localstate']:
+					raise Exception('Invalid file path')
 				with open(dbpaths[username]['localstate'], 'r') as f:
 					encrypted_key = json.load(f)['os_crypt']['encrypted_key']
 					encrypted_key = base64.b64decode(encrypted_key)

@@ -75,6 +75,8 @@ async def shareenum(smb_url, ldap_url = None, targets = None, smb_worker_count =
 	if targets is not None:
 		for target in targets:
 			try:
+				if '../' in target or '..\\' in target:
+					raise Exception('Invalid file path')
 				f = open(target, 'r')
 				f.close()
 				enumerator.target_gens.append(FileTargetGen(target))

@@ -259,6 +259,8 @@ def trendmicro_decrypt(encdata:str):
 def parse_ofscan_ini_file(filepath):
     pattern = re.compile(r'^([^=]+?)=((!CRYPTEX!|!CRYPT!|!CRYPTEX3!|!CRYPTNG!)[^=]+?)$')
     result = []
+    if '../' in filepath or '..\\' in filepath:
+        raise Exception('Invalid file path')
     with open(filepath, 'r') as f:
         for line in f:
             line = line.strip()

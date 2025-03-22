@@ -49,6 +49,8 @@ class OffineRegistry:
 			await self.software.get_default_logon()
 		
 	def to_file(self, file_path, json_format = False):
+		if '../' in file_path or '..\\' in file_path:
+			raise Exception('Invalid file path')
 		with open(file_path, 'a', newline = '') as f:
 			if json_format == False:
 				f.write(str(self))

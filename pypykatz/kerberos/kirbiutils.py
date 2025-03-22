@@ -53,5 +53,7 @@ def print_kirbi(data):
 
 
 def parse_kirbi(kirbifile):
+	if '../' in kirbifile or '..\\' in kirbifile:
+		raise Exception('Invalid file path')
 	with open(kirbifile, 'rb') as f:
 		print_kirbi(f.read())
