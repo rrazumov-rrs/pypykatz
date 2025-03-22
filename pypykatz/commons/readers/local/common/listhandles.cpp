@@ -6,6 +6,8 @@
  
 #include <windows.h>
 #include <stdio.h>
+#include <cerrno>
+#include <climits>
  
 #define NT_SUCCESS(x) ((x) >= 0)
 #define STATUS_INFO_LENGTH_MISMATCH 0xc0000004
@@ -145,7 +147,14 @@ int wmain(int argc, WCHAR *argv[]) {
         return 1;
     }
  
-    pid = _wtoi(argv[1]);
+    errno = 0;
+    wchar_t *endptr;
+    long pid_temp = wcstol(argv[1], &endptr, 10);
+    if (errno == ERANGE || pid_temp <= 0 || pid_temp > ULONG_MAX || *endptr != L'\0') {
+        printf("Invalid process ID\n");
+        return 1;
+    }
+    pid = (ULONG)pid_temp;
  
     if (!(processHandle = OpenProcess(PROCESS_DUP_HANDLE, FALSE, pid))) {
         printf("Could not open PID %d! (Don't try to open a system process.)\n", pid);
