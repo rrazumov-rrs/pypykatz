@@ -18,11 +18,11 @@ jobs:
       id-token: 'write'
     
     steps:        
-    - uses: 'actions/checkout@v4'
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       with:
         fetch-depth: 0
     - id: 'auth'
-      uses: 'google-github-actions/auth@v1'
+      uses: google-github-actions/auth@3a3c4c57d294ef65efaaee4ff17b22fa88dd3c69 # v1
       with:
         credentials_json: '${{ secrets.GCLOUD_BUCKET_SERVICE_USER_SECRET }}'
 
@@ -52,7 +52,7 @@ jobs:
     #    path: builder\pyinstaller\*.exe
         
     - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v1'
+      uses: google-github-actions/setup-gcloud@e30db14379863a8c79331b04a9969f4c1e225e0b # v1
       with:
         version: '>= 390.0.0'
 
