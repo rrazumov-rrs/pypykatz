@@ -144,6 +144,8 @@ class ShareEnumerator:
 			self.hosts.append(entry['attributes']['sAMAccountName'][:-1])
 			
 	def load_targets_file(self, filename):
+		if '../' in filename or '..\\' in filename:
+			raise Exception('Invalid file path')
 		with open(filename,'r') as f:
 			for line in f:
 				line=line.strip()
