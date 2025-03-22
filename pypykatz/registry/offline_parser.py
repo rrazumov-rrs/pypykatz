@@ -58,6 +58,8 @@ class OffineRegistry:
 				pass
 		
 	def to_file(self, file_path, json_format = False):
+		if '../' in file_path or '..\\' in file_path:
+			raise Exception('Invalid file path')
 		with open(file_path, 'a', newline = '') as f:
 			if json_format == False:
 				f.write(str(self))
@@ -117,6 +119,8 @@ class OffineRegistry:
 			if notfile == True:
 				sys_hive = system_path
 			else:
+				if '../' in system_path or '..\\' in system_path:
+					raise Exception('Invalid file path')
 				sys_hive = open(system_path, 'rb')
 			po.system_hive = AIOWinRegHive(sys_hive)
 		except Exception as e:
@@ -128,6 +132,8 @@ class OffineRegistry:
 				if notfile == True:
 					sam_hive = sam_path
 				else:
+					if '../' in sam_path or '..\\' in sam_path:
+						raise Exception('Invalid file path')
 					sam_hive = open(sam_path, 'rb')
 
 				po.sam_hive = AIOWinRegHive(sam_hive)
@@ -143,7 +149,9 @@ class OffineRegistry:
 				if notfile == True:
 					sec_hive = security_path
 				else:
-					sec_hive = open(security_path, 'rb')				
+					if '../' in security_path or '..\\' in security_path:
+						raise Exception('Invalid file path')
+					sec_hive = open(security_path, 'rb')
 				po.security_hive = AIOWinRegHive(sec_hive)
 			except Exception as e:
 				logger.error('Failed to open SECURITY hive! Reason: %s' % str(e))
@@ -157,6 +165,8 @@ class OffineRegistry:
 				if notfile == True:
 					sof_hive = software_path
 				else:
+					if '../' in software_path or '..\\' in software_path:
+						raise Exception('Invalid file path')
 					sof_hive = open(software_path, 'rb')
 				
 				po.software_hive = AIOWinRegHive(sof_hive)

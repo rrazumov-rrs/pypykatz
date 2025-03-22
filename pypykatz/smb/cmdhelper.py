@@ -475,6 +475,8 @@ class SMBCMDHelper:
 
 			try:
 				if args.outfile is not None:
+					if '../' in args.outfile or '..\' in args.outfile:
+						raise Exception('Invalid file path')
 					outfile = open(args.outfile+'_dcsync.txt', 'w', newline = '')
 
 				async for secret in dcsync(args.url):
@@ -493,6 +495,8 @@ class SMBCMDHelper:
 			from pypykatz.smb.dcsync import dcsync
 			
 			if args.outfile is not None:
+				if '../' in args.outfile or '..\' in args.outfile:
+					raise Exception('Invalid file path') 
 				outfile = open(args.outfile, 'w', newline = '')
 
 			async for secret in dcsync(args.url, args.username):
@@ -509,6 +513,8 @@ class SMBCMDHelper:
 			async for tid, po, err in regdump(args.url, targets=args.target, worker_cnt = args.worker_count):
 				if err is not None:
 					if args.outfile:
+						if '../' in args.outfile or '..\' in args.outfile:
+							raise Exception('Invalid file path')
 						with open(args.outfile, 'a') as f:
 							f.write('[%s][ERROR]%s' % (tid, str(err)))
 					else:
@@ -624,6 +630,8 @@ class SMBCMDHelper:
 				json.dump(results, f, cls = UniversalEncoder, indent=4, sort_keys=True)
 
 		elif args.outfile and args.grep:
+			if '../' in args.outfile or '..\' in args.outfile:
+				raise Exception('Invalid file path')
 			with open(args.outfile+file_prefix, 'a', newline = '') as f:
 				f.write(':'.join(['target'] + LogonSession.grep_header) + '\r\n')
 				for result in results:
@@ -632,6 +640,8 @@ class SMBCMDHelper:
 							f.write(':'.join([result] + row) + '\r\n')
 		
 		elif args.outfile:
+			if '../' in args.outfile or '..\' in args.outfile:
+				raise Exception('Invalid file path')
 			with open(args.outfile+file_prefix, 'a') as f:
 				for result in results:
 					f.write('FILE: ======== %s =======\n' % result)
