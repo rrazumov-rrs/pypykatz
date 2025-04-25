@@ -57,9 +57,11 @@ jobs:
         version: '>= 390.0.0'
 
     - name: Upload Executables to GCS
+      env:
+        REPO_NAME: ${{ github.event.repository.name }}
       run: |
-        $PROJVERSION = python -c "import sys; sys.path.append('${{ github.event.repository.name }}'); import _version; print(_version.__version__)"
+        $PROJVERSION = python -c "import sys; sys.path.append('$env:REPO_NAME'); import _version; print(_version.__version__)"
         Write-Host "Detected Version: $PROJVERSION"
-        gsutil cp builder\pyinstaller\*.exe gs://skelsec-github-foss/${{ github.event.repository.name }}/$PROJVERSION/
-        gsutil cp builder\pyinstaller\*.7z gs://skelsec-github-foss/${{ github.event.repository.name }}/$PROJVERSION/
+        gsutil cp builder\pyinstaller\*.exe gs://skelsec-github-foss/$env:REPO_NAME/$PROJVERSION/
+        gsutil cp builder\pyinstaller\*.7z gs://skelsec-github-foss/$env:REPO_NAME/$PROJVERSION/
       shell: powershell
